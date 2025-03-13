@@ -7,7 +7,7 @@
 
 namespace fs = std::filesystem;
 
-constexpr static auto NEED_TO_COPY{ 10 };
+constexpr static auto NEED_TO_COPY{ 200 };
 static auto g_Counter{ 0 };
 
 static auto DEFAULT_PATH{ fs::current_path() };
