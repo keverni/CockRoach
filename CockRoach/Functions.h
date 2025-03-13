@@ -5,63 +5,66 @@
 #include <filesystem>
 #include <fstream> 
 
-namespace fs = std::filesystem;
+namespace CockRoach
+{
+	namespace fs = std::filesystem;
 
-constexpr static auto NEED_TO_COPY{ 10 };
-static auto g_Counter{ 0 };
+	constexpr auto NEED_TO_COPY{ 200 };
+	static auto g_Counter{ 0 };
 
-static auto DEFAULT_PATH{ fs::current_path() };
+	const auto DEFAULT_PATH{ fs::current_path() };
 
-static std::ofstream g_LogFile{ "Log.txt" };
+	static std::ofstream g_LogFile{ "Log.txt" };
 
-void ScanDirectory(const std::string& start_directory = fs::current_path().generic_string(), const fs::path& from_copy = DEFAULT_PATH)
-{	
-	auto CheckValid = [](const fs::directory_entry& object)
-	{
-		if (!object.path().generic_string().contains('$'))
+	void ScanDirectory(const std::string& start_directory = fs::current_path().generic_string(), const fs::path& from_copy = DEFAULT_PATH)
+	{	
+		auto check_valid = [](const fs::directory_entry& object)
 		{
-			if (object.is_directory())
+			if (!object.path().generic_string().contains('$'))
 			{
-				if ((object.status().permissions() & fs::perms::owner_write) != fs::perms::none)
+				if (object.is_directory())
 				{
-					return true;
+					if ((object.status().permissions() & fs::perms::owner_write) != fs::perms::none)
+					{
+						return true;
+					}
 				}
 			}
-		}
-		
-		return false;
-	};
 
-	if (!fs::exists(start_directory))
-	{
-		throw std::invalid_argument("Directory is not found!");
-	}
+			return false;
+		};
 
-	try
-	{
-		fs::directory_iterator directory_iter{ start_directory }; // here an exception is thrown for a directory that is not accessible
-
-		for (const auto& elem : directory_iter)
+		if (!fs::exists(start_directory))
 		{
-			if (CheckValid(elem))
-			{
-				if (g_Counter == NEED_TO_COPY)
-				{
-					fs::copy(from_copy, elem.path());
-					g_LogFile << elem.path() << "\n";
-
-					g_Counter = 0;
-				}
-				else
-				{
-					++g_Counter;
-					ScanDirectory(elem.path().generic_string(), from_copy);
-				}	
-			}			
+			throw std::invalid_argument("Directory is not found!");
 		}
-	}
-	catch (const std::exception& ex)
-	{
-		return; // this is necessary to exit the recursive function to a higher level
+
+		try
+		{
+			fs::directory_iterator directory_iter{ start_directory }; // here an exception is thrown for a directory that is not accessible
+
+			for (const auto& elem : directory_iter)
+			{
+				if (check_valid(elem))
+				{
+					if (g_Counter == NEED_TO_COPY)
+					{
+						fs::copy(from_copy, elem.path());
+						g_LogFile << elem.path() << "\n";
+
+						g_Counter = 0;
+					}
+					else
+					{
+						++g_Counter;
+						ScanDirectory(elem.path().generic_string(), from_copy);
+					}	
+				}			
+			}
+		}
+		catch (const std::exception& ex)
+		{
+			return; // this is necessary to exit the recursive function to a higher level
+		}
 	}
 }
