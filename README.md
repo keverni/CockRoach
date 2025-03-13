@@ -11,9 +11,9 @@ int main() noexcept
 {
 	try
 	{
-		ScanDirectory("C:\start_of_recursion_scan\", "C:\copy_from");
+		ScanDirectory("C:\\start_of_recursion_scan\\", "C:\\copy_from");
 	}
-	catch (const std::exception& ex)
+	catch (const std::invalid_argument& ex)
 	{
 		std::cerr << ex.what() << std::endl;
 	}
