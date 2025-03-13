@@ -11,11 +11,11 @@ int main() noexcept
 {
 	try
 	{
-		ScanDirectory("C:/", "C:/.../TestFile.txt");
+		ScanDirectory("C:\start_of_recursion_scan\", "C:\copy_from");
 	}
-	catch (const std::invalid_argument& ex)
+	catch (const std::exception& ex)
 	{
-		std::cout << ex.what() << std::endl;
+		std::cerr << ex.what() << std::endl;
 	}
 	
 	return 0;
