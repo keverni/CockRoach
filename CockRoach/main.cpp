@@ -1,14 +1,16 @@
 #include "Functions.h"
 
+#include <iostream>
+
 int main() noexcept
 {
 	try
 	{
-		ScanDirectory("C:/");
+		ScanDirectory("C:\\");
 	}
 	catch (const std::invalid_argument& ex)
 	{
-		std::cout << ex.what() << std::endl;
+		std::cerr << ex.what() << std::endl;
 	}
 	
 	return 0;
