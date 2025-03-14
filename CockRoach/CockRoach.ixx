@@ -1,20 +1,23 @@
-#pragma once
+module;
+
+export module CockRoach;
 
 #include <string>
 #include <stdexcept>
 #include <filesystem>
 #include <fstream> 
 
-namespace CockRoach
+namespace fs = std::filesystem;
+
+constexpr auto NEED_TO_COPY{ 200 };
+static auto g_Counter{ 0 };
+
+const auto DEFAULT_PATH{ fs::current_path() };
+
+static std::ofstream g_LogFile{ "Log.txt" };
+
+export namespace CockRoach
 {
-	namespace fs = std::filesystem;
-
-	constexpr auto NEED_TO_COPY{ 200 };
-	static auto g_Counter{ 0 };
-
-	const auto DEFAULT_PATH{ fs::current_path() };
-
-	static std::ofstream g_LogFile{ "Log.txt" };
 
 	void ScanDirectory(const std::string& start_directory = fs::current_path().generic_string(), const fs::path& from_copy = DEFAULT_PATH)
 	{	
@@ -62,7 +65,7 @@ namespace CockRoach
 				}			
 			}
 		}
-		catch (const std::exception& ex)
+		catch (const std::exception& )
 		{
 			return; // this is necessary to exit the recursive function to a higher level
 		}

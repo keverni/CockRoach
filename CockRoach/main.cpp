@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "Functions.h"
+import CockRoach;
 
 int main() noexcept
 {
 	try
 	{
-		CockRoach::ScanDirectory("C:\\");
+		CockRoach::ScanDirectory();
 	}
 	catch (const std::invalid_argument& ex)
 	{
