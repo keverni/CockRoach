@@ -11,7 +11,7 @@ int main() noexcept
 {
 	try
 	{
-		ScanDirectory("C:\\start_of_recursion_scan\\", "C:\\copy_from");
+		CockRoach::ScanDirectory("C:\\start_of_recursion_scan\\", "C:\\copy_from");
 	}
 	catch (const std::invalid_argument& ex)
 	{

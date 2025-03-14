@@ -7,19 +7,18 @@ export module CockRoach;
 #include <filesystem>
 #include <fstream> 
 
-namespace fs = std::filesystem;
-
-constexpr auto NEED_TO_COPY{ 200 };
-static auto g_Counter{ 0 };
-
-const auto DEFAULT_PATH{ fs::current_path() };
-
-static std::ofstream g_LogFile{ "Log.txt" };
-
-export namespace CockRoach
+namespace CockRoach
 {
+	namespace fs = std::filesystem;
 
-	void ScanDirectory(const std::string& start_directory = fs::current_path().generic_string(), const fs::path& from_copy = DEFAULT_PATH)
+	constexpr auto NEED_TO_COPY{ 200 };
+	static auto g_Counter{ 0 };
+
+	const auto DEFAULT_PATH{ fs::current_path() };
+
+	static std::ofstream g_LogFile{ "Log.txt" };
+
+	export void ScanDirectory(const std::string& start_directory = fs::current_path().generic_string(), const fs::path& from_copy = DEFAULT_PATH)
 	{	
 		auto check_valid = [](const fs::directory_entry& object)
 		{
